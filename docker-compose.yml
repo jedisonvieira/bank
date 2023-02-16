@@ -1,0 +1,50 @@
+version: "3.2"
+services:
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    volumes:
+      - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+      - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+      - ./rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - rabbitmq_go_net
+
+  postgres-customer:
+    container_name: postgres-customer
+    ports:
+      - "5432:5432"
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=customer
+      - POSTGRES_PASSWORD=postgres
+
+  postgres-transactions:
+    container_name: postgres-transaction
+    ports:
+      - "5433:5432"
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=bank
+      - POSTGRES_PASSWORD=postgres
+
+  postgres-balance:
+    container_name: postgres-balance
+    ports:
+      - "5434:5432"
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=bank
+      - POSTGRES_PASSWORD=postgres
+
+networks:
+  rabbitmq_go_net:
+    driver: bridge
