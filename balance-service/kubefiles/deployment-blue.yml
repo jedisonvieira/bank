@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: balance-app-blue
+  namespace: bank-app
+  labels:
+    version: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: balance-app
+      namespace: bank-app
+  template:
+    metadata:
+      labels:
+        app: balance-app
+        namespace: bank-app
+        version: blue
+    spec:
+      containers:
+        - name: balance-app
+          image: jedisonvieira/balance-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000

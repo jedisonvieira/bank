@@ -2,16 +2,16 @@ const { Client } = require("pg");
 const express = require("express");
 const amqplib = require("amqplib/callback_api");
 
-const customerPort = 3002;
-const transactionPort = 3003;
+const customerPort = 3000;
+const transactionPort = 3001;
 const app = express();
-const host = "localhost";
+const host = "host.minikube.internal";
 const amqp = `amqp://${host}:5672`;
 const customerQueue = "customer";
 const transactionQueue = "transaction";
 const balanceDb = {
   user: "postgres",
-  host: "localhost",
+  host: host,
   database: "bank",
   password: "postgres",
   port: 5434,

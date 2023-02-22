@@ -1,0 +1,14 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: balance-service-rule
+  namespace: bank-app
+spec:
+  host: balance-service
+  subsets:
+    - name: blue
+      labels:
+        version: blue
+    - name: green
+      labels:
+        version: green

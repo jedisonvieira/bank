@@ -4,13 +4,13 @@ const amqplib = require("amqplib/callback_api");
 
 const port = 3000;
 const app = express();
-const host = "localhost";
+const host = "host.minikube.internal";
 const amqp = `amqp://${host}:5672`;
 const transactionQueue = "transaction";
 const customerQueue = "customer";
 const transactionDb = {
   user: "postgres",
-  host: "localhost",
+  host: host,
   database: "bank",
   password: "postgres",
   port: 5433,

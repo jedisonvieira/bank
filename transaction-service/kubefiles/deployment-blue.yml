@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: transaction-app-blue
+  namespace: bank-app
+  labels:
+    version: blue
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: transaction-app
+      namespace: bank-app
+  template:
+    metadata:
+      labels:
+        app: transaction-app
+        namespace: bank-app
+        version: blue
+    spec:
+      containers:
+        - name: transaction-app
+          image: jedisonvieira/transaction-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000

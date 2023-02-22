@@ -1,0 +1,27 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: transaction-service-stage-blue
+  namespace: bank-app
+spec:
+  gateways:
+    - bank-app-gateway
+  hosts:
+    - "*"
+  http:
+    - match:
+        - uri:
+            prefix: /transaction-service
+      route:
+        - destination:
+            host: transaction-service
+            port:
+              number: 3000
+            subset: blue
+          weight: 70
+        - destination:
+            host: transaction-service
+            port:
+              number: 3000
+            subset: green
+          weight: 30
