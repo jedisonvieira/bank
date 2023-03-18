@@ -27,7 +27,6 @@ app.listen(port, () => {
       console.log(`transaction-service connected to queue ${customerQueue}!`);
       channel.consume(customerQueue, (msg) => {
         const client = new Client(transactionDb);
-        console.log("Message:" + msg.content)
         const customer = JSON.parse(msg.content);
 
         console.log("Customer incoming...", customer);
@@ -37,7 +36,7 @@ app.listen(port, () => {
             "INSERT INTO customer (name) VALUES ($1)",
             [customer.name],
             (err) => {
-              console.log("Erro:" + err)
+              console.log("Erro:" + err);
               if (err) throw err;
               client.end();
             }

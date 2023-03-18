@@ -1,7 +1,7 @@
 CREATE DATABASE bank;
 
 CREATE TABLE transaction (
-    customer_id INTEGER,
+    customer_id SERIAL,
     type VARCHAR(255),
     value INTEGER,
     description VARCHAR(255)
