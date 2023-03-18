@@ -7,4 +7,4 @@ CREATE TABLE transaction (
     description VARCHAR(255)
 );
 
-CREATE TABLE customer (id INTEGER, name VARCHAR(255));
+CREATE TABLE customer (id SERIAL, name VARCHAR(255),cpf VARCHAR(100));

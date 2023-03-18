@@ -4,7 +4,7 @@ const amqplib = require("amqplib/callback_api");
 
 const port = 3000;
 const app = express();
-const host = "host.minikube.internal";
+const host = "localhost";
 const amqp = `amqp://${host}:5672`;
 const transactionQueue = "transaction";
 const customerQueue = "customer";
@@ -27,15 +27,19 @@ app.listen(port, () => {
       console.log(`transaction-service connected to queue ${customerQueue}!`);
       channel.consume(customerQueue, (msg) => {
         const client = new Client(transactionDb);
+        console.log("Message:" + msg.content)
         const customer = JSON.parse(msg.content);
+
         console.log("Customer incoming...", customer);
         client.connect();
         if (customer.queryType == "insert") {
           client.query(
-            "INSERT INTO customer (id, name) VALUES ($1, $2)",
-            [customer.id, customer.name],
+            "INSERT INTO customer (name) VALUES ($1)",
+            [customer.name],
             (err) => {
+              console.log("Erro:" + err)
               if (err) throw err;
+              client.end();
             }
           );
         } else if (customer.queryType == "delete") {
