@@ -29,6 +29,10 @@ public abstract class GenericDAO<T> {
 
     protected abstract void setStatementParams(PreparedStatement statement, T entity) throws SQLException;
 
+    protected abstract void setStatementParams(PreparedStatement statement, Integer id) throws SQLException;
+
+    protected abstract void updateStatementParams(PreparedStatement statement, T entity) throws SQLException;
+
     protected abstract T createEntity(ResultSet resultSet) throws SQLException;
 
     public void closeConnection() {
@@ -55,16 +59,16 @@ public abstract class GenericDAO<T> {
 
     public void update(T entity) {
         try (PreparedStatement statement = connection.prepareStatement(getUpdateQuery())) {
-            setStatementParams(statement, entity);
+            updateStatementParams(statement, entity);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void delete(T entity) {
+    public void delete(Integer id) {
         try (PreparedStatement statement = connection.prepareStatement(getDeleteQuery())) {
-            setStatementParams(statement, entity);
+            setStatementParams(statement, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

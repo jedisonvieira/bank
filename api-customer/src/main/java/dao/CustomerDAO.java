@@ -32,7 +32,7 @@ public class CustomerDAO extends GenericDAO<Customer> {
 
     @Override
     protected String getSelectByIdQuery() {
-        return "SELECT id, name, cpf FROM users WHERE id = ?";
+        return "SELECT id, name, cpf FROM customer WHERE id = ?";
     }
 
     @Override
@@ -43,10 +43,23 @@ public class CustomerDAO extends GenericDAO<Customer> {
     }
 
     @Override
+    protected void setStatementParams(PreparedStatement statement, Integer id) throws SQLException {
+        statement.setInt(1,id);
+    }
+
+    @Override
+    protected void updateStatementParams(PreparedStatement statement, Customer entity) throws SQLException {
+        statement.setString(1,entity.getName());
+        statement.setString(2,entity.getCpf());
+        statement.setInt(3,entity.getId());
+    }
+
+    @Override
     protected Customer createEntity(ResultSet resultSet) throws SQLException {
         Customer customer = new Customer();
         customer.setName(resultSet.getString("name"));
         customer.setCpf(resultSet.getString("cpf"));
+        customer.setId(resultSet.getInt("id"));
         return customer;
     }
 }

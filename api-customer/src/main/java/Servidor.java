@@ -15,7 +15,6 @@ public class Servidor {
             config.packages("rest");
             HttpServer server = GrizzlyHttpServerFactory.createHttpServer(uri, config);
             System.out.println("servidor no ar teste - " + server);
-            // Teste http://localhost:8080/ola
         } catch (Exception e) {
             System.out.println("Erro na execução do servidor JSE - " + e.getMessage());
         }
