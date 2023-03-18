@@ -81,21 +81,30 @@ app.listen(transactionPort, () => {
           "SELECT value FROM balance WHERE customer_id = $1",
           [transaction.customerId],
           (err, res) => {
-            let newValue;
-            let currentValue = res.rows[0].value ?? 0;
             if (err) throw err;
-            if (transaction.type == "INCOME") {
-              newValue = currentValue + transaction.value;
-            } else {
-              newValue = currentValue - transaction.value;
-            }
-            client.query(
-              "UPDATE balance SET value = $2 WHERE customer_id = $1",
-              [transaction.customerId, newValue],
-              (err) => {
-                if (err) throw err;
+            if (res.rows[0]) {
+              let newValue;
+              if (transaction.type == "INCOME") {
+                newValue = res.rows[0].value + transaction.value;
+              } else {
+                newValue = res.rows[0].value - transaction.value;
               }
-            );
+              client.query(
+                "UPDATE balance SET value = $2 WHERE customer_id = $1",
+                [transaction.customerId, newValue],
+                (err) => {
+                  if (err) throw err;
+                }
+              );
+            } else {
+              client.query(
+                "INSERT INTO balance ($1, $2)",
+                [transaction.customerId, newValue],
+                (err) => {
+                  if (err) throw err;
+                }
+              );
+            }
           }
         );
       });
