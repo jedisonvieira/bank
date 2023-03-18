@@ -13,14 +13,14 @@ import java.util.concurrent.TimeoutException;
 
 public class RabbitMQConf {
 
-    public void createMessage(Customer customer) throws IOException, TimeoutException {
+    public void createMessage(Customer customer,String queryType) throws IOException, TimeoutException {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
 
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         ObjectMapper mapper = new ObjectMapper();
-        customer.setQueryType("insert");
+        customer.setQueryType(queryType);
         String json = mapper.writeValueAsString(customer);
 
         channel.basicPublish("", "customer", null, json.getBytes("UTF-8"));
