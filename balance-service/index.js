@@ -24,7 +24,7 @@ app.listen(customerPort, () => {
     if (err) throw err;
     conn.createChannel((err, channel) => {
       if (err) throw err;
-      channel.assertQueue(customerQueue, { durable: false, autoDelete: true });
+      channel.assertQueue(customerQueue);
       channel = channel;
       console.log(`balance-service connected to queue ${customerQueue}!`);
       channel.consume(customerQueue, (msg) => {
