@@ -33,8 +33,8 @@ app.listen(port, () => {
         client.connect();
         if (customer.queryType == "insert") {
           client.query(
-            "INSERT INTO customer (name) VALUES ($1)",
-            [customer.name],
+            "INSERT INTO customer (name, cpf) VALUES ($1, $2)",
+            [customer.name, customer.cpf],
             (err) => {
               console.log("Erro:" + err);
               if (err) throw err;
@@ -43,7 +43,7 @@ app.listen(port, () => {
           );
         } else if (customer.queryType == "delete") {
           client.query(
-            "DELETE FROM customer WHEREid = $1",
+            "DELETE FROM customer WHERE id = $1",
             [customer.id],
             (err) => {
               if (err) throw err;
@@ -58,7 +58,6 @@ app.listen(port, () => {
             }
           );
         }
-        client.end();
       });
     });
   });
