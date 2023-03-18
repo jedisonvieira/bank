@@ -81,18 +81,17 @@ app.listen(transactionPort, () => {
           "SELECT value FROM balance WHERE customer_id = $1",
           [transaction.customerId],
           (err, res) => {
-            let currentValue;
+            let newValue;
+            let currentValue = res.rows[0].value ?? 0;
             if (err) throw err;
             if (transaction.type == "INCOME") {
-              currentValue =
-                (res.rows[0].value ? res.rows[0].value : 0) + transaction.value;
+              newValue = currentValue + transaction.value;
             } else {
-              currentValue =
-                (res.rows[0].value ? res.rows[0].value : 0) - transaction.value;
+              newValue = res.rows[0].value - transaction.value;
             }
             client.query(
               "UPDATE balance SET value = $2 WHERE customer_id = $1",
-              [transaction.customerId, currentValue],
+              [transaction.customerId, newValue],
               (err) => {
                 if (err) throw err;
               }
