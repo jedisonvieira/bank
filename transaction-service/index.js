@@ -23,7 +23,7 @@ app.listen(port, () => {
     if (err) throw err;
     conn.createChannel((err, channel) => {
       if (err) throw err;
-      channel.assertQueue(customerQueue, { durable: false, autoDelete: true });
+      channel.assertQueue(customerQueue);
       console.log(`transaction-service connected to queue ${customerQueue}!`);
       channel.consume(customerQueue, (msg) => {
         const client = new Client(transactionDb);
