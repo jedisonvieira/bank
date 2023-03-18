@@ -98,7 +98,7 @@ app.listen(transactionPort, () => {
               );
             } else {
               client.query(
-                "INSERT INTO balance ($1, $2)",
+                "INSERT INTO balance VALUES ($1, $2)",
                 [transaction.customerId, newValue],
                 (err) => {
                   if (err) throw err;
